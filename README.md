@@ -5,7 +5,7 @@ Generates short form videos (1080x1920) using content from TikTok.
 I created this program for fun, and to learn new skills such as movie.py and working with downloading files from the internet.
 
 # Instructions
-
+https://www.youtube.com/watch?v=BHc_72r4yzM&ab_channel=DeveloperDrew
 
 # How it works
 1. Selects a random topic from the list of topics the user creates
