@@ -6,7 +6,7 @@ I created this program for fun, and to learn new skills such as movie.py and wor
 
 **Here is an example video**
 
-<video src='https://youtube.com/shorts/IJi9FgQAovs' width=180/>
+https://youtube.com/shorts/IJi9FgQAovs
 
 # Instructions
 https://www.youtube.com/watch?v=BHc_72r4yzM&ab_channel=DeveloperDrew
