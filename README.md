@@ -4,6 +4,10 @@ Generates short form videos (1080x1920) using content from TikTok.
 
 I created this program for fun, and to learn new skills such as movie.py and working with downloading files from the internet.
 
+**Here is an example video**
+
+<video src='https://youtube.com/shorts/IJi9FgQAovs' width=180/>
+
 # Instructions
 https://www.youtube.com/watch?v=BHc_72r4yzM&ab_channel=DeveloperDrew
 
@@ -15,3 +19,5 @@ https://www.youtube.com/watch?v=BHc_72r4yzM&ab_channel=DeveloperDrew
 5. Combines the TikTok video, a secondary video, and a background together into one video
 6. Saves the result into the outputs folder
 7. Repeats indefinitely until the user ends the program
+
+
