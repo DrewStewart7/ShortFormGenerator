@@ -2,5 +2,5 @@ requests
 asyncio
 colorama
 moviepy
-TikTokApi
 playwright
+TikTokApi
