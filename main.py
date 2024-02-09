@@ -180,6 +180,8 @@ async def find_video(term):
                 if int(dur) <= 120 and not 'Reply to' in caption and not '@' in caption and not 'shop' in caption:
                     videos.append(video)
             except:
+                print("If you are getting a browser error please run python -m playwright install in cmd")
+                time.sleep(1)
                 find_video(term)
         api.close_sessions()
         try:
@@ -199,6 +201,8 @@ async def find_video(term):
             print('\nDownloading video without watermark... This might take a minute...')
             downloadVid(link,caption,username)
         except:
+            print("If you are getting a browser error please run python -m playwright install in cmd")
+            time.sleep(1)
             find_video(term)
         
 def main():        
