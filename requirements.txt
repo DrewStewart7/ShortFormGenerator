@@ -4,3 +4,4 @@ colorama
 moviepy
 playwright
 TikTokApi
+bs4
