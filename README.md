@@ -23,6 +23,10 @@ https://youtube.com/shorts/IJi9FgQAovs
 # Setup Instructions
 https://www.youtube.com/watch?v=BHc_72r4yzM&ab_channel=DeveloperDrew
 
+# Special Thanks to akasakaid, aka Fawwaz Thoerif
+Their TiktokDownloader repo has been helpful to download tiktok videos without a watermark. I used and modified 
+a couple python files from https://github.com/akasakaid/TiktokDownloader
 
+Thank you again, Fawwaz!
 
 
