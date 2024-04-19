@@ -1,5 +1,6 @@
 #import required modules
 import requests,json,time,os, asyncio, random, multiprocessing,colorama
+from tiktok_downloader import downloader
 from TikTokApi import TikTokApi
 from moviepy.editor import VideoFileClip, clips_array, ImageClip, CompositeVideoClip, vfx
 colorama.init(autoreset=True)
@@ -24,6 +25,9 @@ mainurl = "https://savett.cc/en/"
 newdurl = "https://dl2.savett.cc/file/"
 trigurl = 'https://savett.cc/en/trigger-download'
 
+#define downloader object
+dl = downloader("video.mp4")
+
 s = requests.session()
 
 s.headers = {
@@ -43,91 +47,47 @@ s.headers = {
 csrfreq = s.get("https://savett.cc/en/")
 csrf = csrfreq.text.split('csrf_token" value=')[1].split('"')[1]
 
+
+#try different sites to download the tiktok video from
+def tryDownload(text):
+    res = dl.tiktapio(text)
+    if res:
+        print("[+] success download with tiktapio !")
+        
+        return
+
+    res = dl.tiktapiocom(text)
+    if res:
+        print("[+] success download with tiktapiocom !")
+       
+        return
+
+    res = dl.tikmatecc(text)
+    if res:
+        print("[+] success download with tikmatecc !")
+        
+        return
+
+    res = dl.snaptikpro(text)
+    if res:
+        print("[+] success download with snaptikpro !")
+       
+        return
+
+    res = dl.musicaldown(text)
+    if res:
+        print("[+] success download with musicaldown !")
+        return
+
+
+
 #download video at the url selected by find_video
 def downloadVid(url,caption,username):
     try:
-        global s
-        global csrf
-        s.headers['Accept'] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7"
-        
-        datas = {
-            "csrf_token":csrf,
-            "url":url
-        }
-        
-        subReq = s.post(downUrl,data=datas)
-        urll = url
-        vidid = urll.split('/')
-        vidid = vidid[len(vidid)-1].split('?')[0]
-        resp3 = subReq.text
-        resp5 = subReq.text
-        resp4 = subReq.text
-        #print(subReq.status_code)
-        #print(subReq.reason)
-        api = None
-        url1 = None
-        url2 = None
-        try:
-            api = resp3.split('#34;https://api16-normal-c-useast1a')[1].split('&#')[0].replace('amp;','')
-            api = f"https://api16-normal-c-useast1a{api}"
-            #print("API:", api)
-            url1 = resp4.split('https://v19-us.tiktokcdn.com')[1].split('&#')[0].replace('amp;','')
-            url1 = f"https://v19-us.tiktokcdn.com{url1}"
-            #print("URL1",url1)
-            url2 = resp5.split('https://v16m-us.tiktokcdn.com')[1].split('&#')[0].replace('amp;','')
-            url2 = f"https://v16m-us.tiktokcdn.com{url2}"
-            #print('URL2',url2)
-        except Exception as e:
-            time.sleep(1)
-            return downloadVid(url,caption,username)
-        #print(url1)
-        resp = subReq.text
-        
-        csrfreq = s.get("https://savett.cc/en/")
-        csrf = csrfreq.text.split('csrf_token" value=')[1].split('"')[1]
-        name = resp.split('conv.set_listener(')[1].split('"')[1]
-        id = name.split("_")[1]
-        vidname = name.split('_')[0]
-        urls = [url1,url2]
-        datas = {
-            "id":id,
-            "url":url,
-            "csrf_token":csrf,
-            "type":"MP4",
-            "ext":"mp4",
-            "info":json.dumps({
-                "API":api,
-                "URL":[url1,url2]
-            })
-        }
+        dl.setName(f"{cwd}\downloads\{caption}.mp4")
 
-        s.headers['Accept'] = 'application/json, text/javascript, */*; q=0.01'
-        s.headers['Referer'] = 'https://savett.cc/en/download'
-        s.headers['Origin']  = 'https://savett.cc'
-        s.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
-        s.headers['X-Requested-With'] = 'XMLHttpRequest'
-        trig = s.post(trigurl,data=datas)
-        statusurl = trig.json()["status_url"]
-        statusurl = f'https://savett.cc{statusurl}'
-        #print(statusurl)
-        time.sleep(2)
-        datas = {
-            '_':time.time()
-        }
-        status = s.get(statusurl,data=datas)
-        #print(status.text)
-        finalurl = status.json()['url']
-        datas = {
+        tryDownload(url)
 
-        }
-        getvid = s.get(finalurl)
-        tag = f'from @{username} on TT'
-        caption = f'{caption[0:100-len(tag)-2]} {tag}'
-        caption = caption.replace("'","").replace('(','').replace(')','')
-        with open(f'{cwd}\downloads\{caption}.mp4' ,mode='wb') as file:
-            file.write(getvid.content)
-            file.close()
-            print(Fore.YELLOW + f'Video Downloaded - {cwd}\downloads\{caption}.mp4')
         print('\nEditing video...')
         # Load videos
         clip1 = VideoFileClip(f"{cwd}\downloads\{caption}.mp4")
@@ -180,8 +140,6 @@ async def find_video(term):
                 if int(dur) <= 120 and not 'Reply to' in caption and not '@' in caption and not 'shop' in caption:
                     videos.append(video)
             except:
-                print("If you are getting a browser error please run python -m playwright install in cmd")
-                time.sleep(1)
                 find_video(term)
         api.close_sessions()
         try:
@@ -201,8 +159,6 @@ async def find_video(term):
             print('\nDownloading video without watermark... This might take a minute...')
             downloadVid(link,caption,username)
         except:
-            print("If you are getting a browser error please run python -m playwright install in cmd")
-            time.sleep(1)
             find_video(term)
         
 def main():        
