@@ -1,3 +1,6 @@
+```python main.py``` to run
+
+
 **QUICK FIX**
 Also run "python -m playwright install" without quotation marks in command prompt please
 
