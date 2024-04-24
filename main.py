@@ -28,24 +28,6 @@ trigurl = 'https://savett.cc/en/trigger-download'
 #define downloader object
 dl = downloader("video.mp4")
 
-s = requests.session()
-
-s.headers = {
-    "User-Agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
-    "Content-Type":"application/x-www-form-urlencoded; charset=UTF-8",
-    "Sec-Ch-Ua":'"Not_A Brand";v="8", "Chromium";v="120", "Google Chrome";v="120"',
-    "Accept-Encoding":'gzip, deflate, br',
-    "Referer":"https://savett.cc/en/",
-    "Origin":"https://savett.cc",
-    "Sec-Fetch-Site":"same-origin",
-    "Sec-Fetch-User":'?1',
-    "Authority":"savett.cc",
-    "Path":"/en/download",
-    "Cookie":'_ga=GA1.1.1398464719.1705359496; _cc_id=30bfb5fa79ac8e8c0b7639efda64e046; __qca=P0-741897807-1705359497254; _pbjs_userid_consent_data=3524755945110770; _sharedid=eff5a8af-5458-4f68-9d5e-b3dae5339896; _lr_env_src_ats=false; cookie=e8794a4a-fda0-4ec9-b5bd-8a64ce554ff1; cookie_cst=zix7LPQsHA%3D%3D; fs.admiral.whitelisted=true; pbjs_fabrickId=%7B%22fabrickId%22%3A%22E1%3AVUdkXS5niDK_TGCxkkaLldlrw9kQB7_k9KCwrjTPL3v1FNkGHdcOvvsyU-odz03P_ba1aq2uEsVIX4XMAOHRhN-slkIayFQQwb9WIZlp1NTWXUwTIn4NCoJLmm5QQ-_J%22%7D; panoramaId_expiry=1706570562034; panoramaId=48ec1c3b7c7cd845ca7864c4041a4945a7023439f911a257412801226684a8c0; panoramaIdType=panoIndiv; cf_clearance=uIhEWO9jLDME9XAD6q04Ri1PyPRid3TsP16mZ1VY5_g-1706053707-1-AdZILqYu4/vL6WarsL51238IdMVvt+tVIWv1f/uREVtszuyBujuy15qR6NBbwtnfPV2VCO7HR6J0B43KwRbuEZM=; _lr_sampling_rate=100; session=eyJjc3JmX3Rva2VuIjoiYTVjMGRlM2U3YThmYjRkZGMzZDIxNzMyYzIxMDRmOGM4NDVhYzg0YiJ9.GJILYA.F0fTGMgTwAVjaX2nIxLX14RtcF8; pbjs_fabrickId_cst=zix7LPQsHA%3D%3D; _lr_retry_request=true; __gads=ID=4ba222ca108651ca:T=1705359498:RT=1706072350:S=ALNI_MasQJ8vgWaF5X7sTdYfikzzv29Qxg; __gpi=UID=00000d63ecf8393a:T=1705359498:RT=1706072350:S=ALNI_MY5afMVmsqHfVNpvUbmp0zKLJC1pQ; _ga_96M898LV38=GS1.1.1706071187.13.1.1706072363.0.0.0; cto_bundle=lLRaU185ZjN2T3JibHNoZHR1UjAzTzBNU2xoOTFicDd0JTJGV2hObm9TWU9RYkp5U0Ixc1Jhdkk3TndlVnBFVjZGZXN1RGNNUFNSczBuNkxQJTJGaU5WeW1oeGVMY1hTcGlVMU5UdXFkU3BRb0JFQzR4eGpYZjFvdER4TGtZZzNtRFpnNSUyQjJzOWpJMDJWdVlsem5NdmYlMkJRUVBnJTJGc0hWUk8lMkJPU0hNa1l6djJQSGVsVDViM3JFViUyQlBrOTRPV0FBJTJCNGI5Uk9EYUhUMEVnN2lVSHF2NmVKbTlwMDh2aGNtcTFQS2VuZ2JIczl1NEdEOVAxcDl5SzJEZnRjM1dUM1paM2QlMkZMVHBHMFZv; cto_bidid=6gpktV82SkFRUjRqMHJWdW5naXd0Z29JQlRSMXhsSU9JODVRR0lCVmU1JTJGSTJFdGVZVDdoUTJTQVhHdjFRSm9ndERkUSUyQkRjQ01iZnJxalVOUmMzcnVPb1kweGpJbDA3d0VoUjNsZ3NNOG16TUZEd3MlM0Q; _awl=2.1706072364.5-9e0f8c241ebae52df1c7cc4ed060c4f5-6763652d75732d63656e7472616c31-7'
-}
-csrfreq = s.get("https://savett.cc/en/")
-csrf = csrfreq.text.split('csrf_token" value=')[1].split('"')[1]
 
 
 #try different sites to download the tiktok video from
