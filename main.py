@@ -30,6 +30,7 @@ dl = downloader("video.mp4")
 
 
 
+
 #try different sites to download the tiktok video from
 def tryDownload(text):
     res = dl.tiktapio(text)
@@ -96,9 +97,9 @@ def downloadVid(url,caption,username):
 
         # Overlay the video clips on the background image
         final_clip = CompositeVideoClip([bg_image, clip1_resized.set_position(("center", "top")), clip2_resized.set_position(("center", "bottom"))])
-
-        # Write the result to a file
-        final_clip.write_videofile(f"{cwd}\outputs\{caption}.mp4", codec="libx264", threads=10)
+        
+        
+        final_clip.write_videofile(f"{cwd}\outputs\{caption}.mp4", codec="libx264", threads=16, preset='medium')
         path = f"{cwd}\outputs\{caption}.mp4"
         print(Fore.GREEN + f"\nVideo editing finished - Saved at {path}\n")
         #uploadVid(path,username,caption)
@@ -122,6 +123,7 @@ async def find_video(term):
                 if int(dur) <= 120 and not 'Reply to' in caption and not '@' in caption and not 'shop' in caption:
                     videos.append(video)
             except:
+                api.close_sessions()
                 find_video(term)
         api.close_sessions()
         try:
