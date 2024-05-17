@@ -24,6 +24,15 @@ https://youtube.com/shorts/IJi9FgQAovs
 7. Repeats indefinitely until the user ends the program
 
 # Setup Instructions
+
+Follow the youtube video instructions below. I've made an update since that YT video was created though. The update introduces
+the options screen. The options include:
+1 Download videos from tiktok (original version)
+2 Use videos from 'feed' folder - uses these videos instead of ones from TikTok
+3 Split one video in 'feed' into smaller parts - splits one large video into smaller parts (user chooses length in seconds), edits, and saves them seperately
+
+As you can see from the options, your 'input' videos will go into the 'feed' folder and the output will be saved into the 'outputs' folder.
+
 https://www.youtube.com/watch?v=BHc_72r4yzM&ab_channel=DeveloperDrew
 
 # Special Thanks to akasakaid, aka Fawwaz Thoerif
