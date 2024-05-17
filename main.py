@@ -1,3 +1,6 @@
+# Created by Drew Stewart January 2024
+# Current version date: 5/17/24
+
 #import required modules
 import requests,json,time,os, asyncio, random, multiprocessing,colorama
 from tiktok_downloader import downloader
@@ -61,8 +64,92 @@ def tryDownload(text):
     if res:
         print("[+] success download with musicaldown !")
         return
+    
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
 
+def editLongVideo(path, clip_length):
+    print('\nEditing video...')
+    # Load videos
+    clip1 = VideoFileClip(path)
+    clip2 = VideoFileClip(secondary_vid)
 
+    # Remove sound from clip2
+    clip2 = clip2.without_audio()
+
+    # Calculate the number of clips
+    num_clips = int(clip1.duration // clip_length)
+
+    for i in range(num_clips):
+        start_time = i * clip_length
+        end_time = (i + 1) * clip_length
+
+        # Process each clip
+        processClip(clip1, clip2, start_time, end_time, i, path)
+
+    # Handle the remaining seconds
+    if clip1.duration % clip_length > 0:
+        start_time = num_clips * clip_length
+        end_time = clip1.duration  # till the end of the video
+
+        # Process the last clip
+        processClip(clip1, clip2, start_time, end_time, num_clips, path)
+
+def processClip(clip1, clip2, start_time, end_time, i, path):
+    # Trim clip1 and clip2
+    clip1_sub = clip1.subclip(start_time, end_time)
+    clip2_sub = clip2.subclip(start_time, end_time)
+
+    # Resize videos
+    # Assuming the final video size is 1090x1920
+    clip1_resized = clip1_sub.resize(height=1920 * 2/3) # Top 2/3
+    clip2_resized = clip2_sub.resize(height=1920 * 1/3) # Bottom 1/3
+
+    # Load the background image
+    bg_image = ImageClip("background.png").set_duration(clip1_sub.duration)
+
+    # Resize the background image to the desired size
+    bg_image = bg_image.resize(newsize=(1080, 1920))
+
+    # Overlay the video clips on the background image
+    final_clip = CompositeVideoClip([bg_image, clip1_resized.set_position(("center", "top")), clip2_resized.set_position(("center", "bottom"))])
+    
+    filename = path.split('\\')[-1].split('.')[0]
+    caption = f"{filename}_{i}"
+    final_clip.write_videofile(f"{cwd}\\outputs\\{caption}.mp4", codec="libx264", threads=16)
+    print(Fore.GREEN + f"\nVideo editing finished - Saved at {cwd}\\outputs\\{caption}.mp4\n")
+
+def editVideo(path):
+    print('\nEditing video...')
+    # Load videos
+    clip1 = VideoFileClip(path)
+    clip2 = VideoFileClip(secondary_vid)
+
+    # Remove sound from clip2
+    clip2 = clip2.without_audio()
+
+    randstart = random.randint(0,int(clip2.duration-clip1.duration))
+
+    # Trim clip2 to the duration of clip1
+    clip2 = clip2.subclip(randstart, randstart + clip1.duration)
+
+    # Resize videos
+    # Assuming the final video size is 1090x1920
+    clip1_resized = clip1.resize(height=1920 * 2/3) # Top 2/3
+    clip2_resized = clip2.resize(height=1920 * 1/3) # Bottom 1/3
+
+    # Load the background image
+    bg_image = ImageClip("background.png").set_duration(clip1.duration)
+
+    # Resize the background image to the desired size
+    bg_image = bg_image.resize(newsize=(1080, 1920))
+
+    # Overlay the video clips on the background image
+    final_clip = CompositeVideoClip([bg_image, clip1_resized.set_position(("center", "top")), clip2_resized.set_position(("center", "bottom"))])
+    
+    caption = path.split("\\")[-1].split(".")[0]
+    final_clip.write_videofile(f"{cwd}\outputs\{caption}.mp4", codec="libx264", threads=16)
+    path = f"{cwd}\outputs\{caption}.mp4"
+    print(Fore.GREEN + f"\nVideo editing finished - Saved at {path}\n")
 
 #download video at the url selected by find_video
 def downloadVid(url,caption,username):
@@ -99,7 +186,7 @@ def downloadVid(url,caption,username):
         final_clip = CompositeVideoClip([bg_image, clip1_resized.set_position(("center", "top")), clip2_resized.set_position(("center", "bottom"))])
         
         
-        final_clip.write_videofile(f"{cwd}\outputs\{caption}.mp4", codec="libx264", threads=16, preset='medium')
+        final_clip.write_videofile(f"{cwd}\outputs\{caption}.mp4", codec="libx264", threads=16)
         path = f"{cwd}\outputs\{caption}.mp4"
         print(Fore.GREEN + f"\nVideo editing finished - Saved at {path}\n")
         #uploadVid(path,username,caption)
@@ -147,21 +234,42 @@ async def find_video(term):
         
 def main():        
     #main event loop
-    while True:
-        try:
-            #get the topic
-            random.seed
-            term = topics[random.randint(0,(len(topics)-1))]
-            
-            
-            
-            asyncio.run(find_video(term))
-            
-            #tiktokl = input("Please enter the tiktok video link: ")
-        except Exception as e:
-            print(e)
-            print("Error, restarting...")
-            continue
+    print("\nOptions\n\n1 Download videos from tiktok\n2 Use videos from 'feed' folder\n3 Split one video in 'feed' into smaller parts")
+    choice = input("\nPlease enter your choice (ex: 1): ")
+    if choice == '1':
+        print("Downloading videos from tiktok...")
+        while True:
+            try:
+                #get the topic
+                random.seed
+                term = topics[random.randint(0,(len(topics)-1))]
+                
+                
+                
+                asyncio.run(find_video(term))
+                
+                #tiktokl = input("Please enter the tiktok video link: ")
+            except Exception as e:
+                print(e)
+                print("Error, restarting...")
+                continue
+    elif choice == '2':
+        print("Using videos from 'feed' folder")
+        for file in os.listdir(f"{cwd}\\feed"):
+            print(f"Processing {file}")
+            editVideo(f"{cwd}\\feed\{file}")
+    elif choice == '3':
+        print("Splitting one video in 'feed' into smaller parts")
+        vname = input("\nWhat is the video name, including the extension? (ex: video.mp4) ")
+        length = input("\nHow long should each clip be in seconds? (ex: 30) ")
+        length = int(length)
+        path = f"{cwd}\\feed\{vname}"
+        
+        print(f"Processing {vname}")
+        editLongVideo(path, length)
+    else:
+        print("Invalid choice, please try again")
+        main()
 if __name__ == "__main__": 
     main()
 
