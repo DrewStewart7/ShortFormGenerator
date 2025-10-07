@@ -2,7 +2,7 @@
 
 
 **QUICK FIX**
-Also run "python -m playwright install" without quotation marks in command prompt please
+Also run `python -m playwright install` in command prompt please
 
 # ShortFormGenerator
 Capable of assembling **hundreds** of videos per day.
